@@ -196,6 +196,10 @@ function AddContractPage() {
               <br />
               <br />
               <h3 className="subtitle">Select Triggering Rules</h3>
+              <p>Rule #1: Asset reallocation will execute only after owner passes</p>
+              <br></br>
+              <p>Rule #2: Add pre-settled asset reallocation execution timeframe (optional) </p>
+
               <div>
                 <label>
                   <input
@@ -255,7 +259,7 @@ function AddContractPage() {
                 }}
                 disabled={Boolean(warning)}
               >
-                Submit Recipient
+                Submit Intention
               </button>
               <br />
               <br />
