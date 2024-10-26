@@ -39,7 +39,9 @@ function AddContractPage() {
       <h1 className="title">Legacy Plan</h1>
 <br></br>
       <h3 className="subtitle">Select Asset</h3>
-      <select style={{ minWidth: "300px", width: "50%" }} value={asset} onChange={(e) => setAsset(e.target.value)}>
+      <select 
+        style={{ minWidth: "300px", width: "50%", padding: "5px", margin: "5px", borderRadius: "3px" }}
+         value={asset} onChange={(e) => setAsset(e.target.value)}>
         <option value="ETH">ETH</option>
         <option value="USDT">USDT</option>
         <option value="USDC">USDC</option>
@@ -48,7 +50,7 @@ function AddContractPage() {
 <br></br>
       <h3 className="subtitle">Determine Amount</h3>
       <input
-        style={{ minWidth: "300px", width: "50%" }}
+        style={{ minWidth: "300px", width: "50%", padding: "5px", margin: "5px", borderRadius: "3px" }}
         type="number"
         min="0"
         max="100"
@@ -85,6 +87,7 @@ function AddContractPage() {
           {customAddresses.map((address, index) => (
             <div key={index}>
               <input
+                style={{ minWidth: "300px", width: "50%", padding: "5px", margin: "5px", borderRadius: "3px" }}
                 type="text"
                 value={address}
                 onChange={(e) => {
@@ -102,7 +105,9 @@ function AddContractPage() {
       {recipientType === 'selectCategory' && (
         <div>
           <h4>Categories</h4>
-          <select value={category} onChange={(e) => setCategory(e.target.value)}>
+          <select 
+            style={{ minWidth: "300px", width: "50%", padding: "5px", margin: "5px", borderRadius: "3px" }}
+            value={category} onChange={(e) => setCategory(e.target.value)}>
             <option value="unrestrained">Unrestrained</option>
             <option value="universities">Universities</option>
             <option value="healthcare">Healthcare</option>
@@ -113,18 +118,36 @@ function AddContractPage() {
 <br></br>
 <br></br>
       <h3 className="subtitle">Select Triggering Rules</h3>
-      <div>
-        <input type="radio" id="preSetTimeframe" value="preSetTimeframe" defaultChecked />
-        <label htmlFor="preSetTimeframe">Pre-set Execution Timeframe</label>
-      </div>
-      <div>
-        <label htmlFor="startDate">Start Date:</label>
-        <input type="date" id="startDate" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
-      </div>
-      <div>
-        <label htmlFor="endDate">End Date:</label>
-        <input type="date" id="endDate" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
-      </div>
+<div className="table-responsive">
+  <table className="table">
+    <tbody>
+      <tr>
+        <td className="align-top" > {/* Add align-top class to the first cell */}
+          <div>
+            <h2>Rule #1: </h2>
+            <input 
+              type="radio" id="preSetTimeframe" value="preSetTimeframe" defaultChecked />
+            <label htmlFor="preSetTimeframe">Pre-setted execution timeframe</label>
+          </div>
+        </td>
+        <td className="align-top" style={{ padding: "1em" }}> {/* Add align-top class to the second cell */}
+          <div>
+            <label htmlFor="startDate">Start Date:</label>
+            <input 
+                  style={{ minWidth: "300px", width: "50%", padding: "5px", margin: "5px", borderRadius: "3px" }}
+                  type="date" id="startDate" />
+          </div>
+          <div>
+            <label htmlFor="endDate">End Date:</label>
+            <input 
+              style={{ minWidth: "300px", width: "50%", padding: "5px", margin: "5px", borderRadius: "3px" }}
+              type="date" id="endDate" />
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
       <button onClick={handleSubmit} style={{ marginTop: "20px", padding: "10px", backgroundColor: "#007BFF", color: "#FFF" }}>
         Submit Will
