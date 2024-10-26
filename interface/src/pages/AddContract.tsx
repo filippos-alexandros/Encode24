@@ -23,7 +23,18 @@ function AddContractPage() {
 
   const provider =  BaseProvider// Initialize your provider
 
+  const transactionHash =  getLatestTransactionHash();
+  console.log(transactionHash)
+  function getLatestTransactionHash() {
+    const currentHashes = localStorage.getItem('transactionHashes');
   
+    if (currentHashes) {
+      const transactionHashes = JSON.parse(currentHashes) as string[];
+      return transactionHashes[transactionHashes.length - 1]; 
+    } else {
+      return null; // Or an appropriate default value if no hashes are found
+    }
+  }
   const handleSubmit = async () => {
     const newWill = {
       asset,

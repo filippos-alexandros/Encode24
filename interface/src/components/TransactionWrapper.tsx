@@ -16,8 +16,12 @@ import {
   mintABI,
   mintContractAddress,
 } from '../constants';
+import { useNavigate } from 'react-router-dom';
+
 
 export default function TransactionWrapper({ address }: { address: Address }) {
+  const navigate = useNavigate();
+
   const contracts = [
     {
       address: "0x163953ffA8A7E1f60326035bA5a4837D240150C9",
@@ -33,6 +37,24 @@ export default function TransactionWrapper({ address }: { address: Address }) {
 
   const handleSuccess = (response: TransactionResponse) => {
     console.log('Transaction successful', response);
+
+    // Get the existing transactionHashes array from localStorage, or initialize an empty array
+    const currentHashes = localStorage.getItem('transactionHashes');
+    let transactionHashes: string[] = currentHashes ? JSON.parse(currentHashes) : [];
+  
+    // Type assertion to ensure response has the expected structure
+    const transactionHash = response.transactionReceipts[0]?.transactionHash as string; 
+  
+    // Add the new transaction hash to the array
+    transactionHashes.push(transactionHash);
+  
+    // Store the updated array back in localStorage
+    localStorage.setItem('transactionHashes', JSON.stringify(transactionHashes));
+  
+    console.log(localStorage.getItem('transactionHashes'));
+    navigate('/add-smart-contract'); 
+
+
   };
 
   return (

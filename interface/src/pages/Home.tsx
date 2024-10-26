@@ -15,7 +15,6 @@ import SmartContractWrapper from "src/components/SmartContractWrapper";
 function HomePage() {
   const { address } = useAccount();
   const [showModal, setShowModal] = useState(false);
-  const navigate = useNavigate(); // Define navigate here
 
   interface CompiledContract {
     abi: any;
