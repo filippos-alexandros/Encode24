@@ -66,7 +66,8 @@ contract WillTest is Test {
             erc20Token,
             nftTokenId,
             nftReleaseTime,
-            nftContract
+            nftContract,
+            "none"
         );
 
         // Simulate the owner's death
@@ -77,7 +78,7 @@ contract WillTest is Test {
 
         // Claim inheritance as the beneficiary
         vm.prank(beneficiary);
-        will.claimInheritance();
+        will.claimInheritance(beneficiary);
 
         // Check the beneficiary's balance
         assertEq(beneficiary.balance, ethAmount, "Beneficiary should have received the inheritance");

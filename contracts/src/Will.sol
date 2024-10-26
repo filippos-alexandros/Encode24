@@ -151,7 +151,7 @@ contract Will {
         uint256 _nftTokenId,
         uint256 _nftReleaseTime,
         address _nftContract,
-        string memory _restrictionCategory
+        string memory /*_restrictionCategory*/
     ) internal {
         Beneficiary storage beneficiary = beneficiaries[index];
 
@@ -199,7 +199,7 @@ contract Will {
         Beneficiary storage beneficiary = beneficiaries[index - 1];
         uint256 currentTime = block.timestamp;
         // Ensure restriction category is "none"
-        require(beneficiary.restrictionCategory == "none", "Cannot claim inheritance with restriction");
+        require(keccak256(abi.encodePacked(beneficiary.restrictionCategory)) == keccak256(abi.encodePacked("none")), "Cannot claim inheritance with restriction");
 
         // Transfer ETH if release time is met
         if (beneficiary.ethAmount > 0 && currentTime >= beneficiary.ethReleaseTime) {
@@ -222,7 +222,7 @@ contract Will {
     }
 
     // Function to check if the restriction category is "none"
-    function catCheckPass(string memory restrictionCategory) internal pure returns (bool) {
+    function catCheckPass(string memory /*_restrictionCategory*/) internal pure returns (bool) {
         // Base verifiction
         return true;
     }
