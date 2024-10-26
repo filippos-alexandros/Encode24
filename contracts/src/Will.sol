@@ -14,7 +14,7 @@ contract Will {
     address public owner;
     bool public isConfirmedDead;
     uint256 public lastAliveTimestamp;
-    uint256 public constant DEATH_INTERVAL = 5 weeks;
+    uint256 public DEATH_INTERVAL = 5 weeks;
     function editDeathInterval(uint256 _deathInterval) public onlyOwner {
         DEATH_INTERVAL = _deathInterval;
     }
