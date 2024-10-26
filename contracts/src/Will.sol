@@ -7,32 +7,25 @@ interface IERC20 {
 }
 
 interface IERC721 {
-        function transferFrom(address from, address to, uint256 tokenId) external;
-    }
-// Define partial NFT ownership structure
-// We assume that the NFT contract is ERC721 compliant
-struct PartialNFT {
-    uint256 tokenId;
-    uint256 shares; // Total shares
-    mapping(address => uint256) ownerShares; // Each owner's share
-    }
-contract Will {
+    function transferFrom(address from, address to, uint256 tokenId) external;
+}
 
+contract Will {
     address public owner;
-    bool public isExecuted;
-    
+    bool public isConfirmedDead;
+
     struct Beneficiary {
         address addr;
         uint256 ethAmount;
         uint256 tokenAmount;
         uint256 nftTokenId;
-        uint256 releaseTime; // Time after which assets can be claimed
+        uint256 releaseTime;
         address erc20Token;
         address nftContract;
     }
 
     Beneficiary[] public beneficiaries;
-    mapping(uint256 => PartialNFT) public partialNFTs; // For fractionalized NFT ownership
+    mapping(address => uint256) public beneficiaryIndex; // Maps address to index in beneficiaries array (+1 to avoid default 0)
 
     constructor() payable {
         owner = msg.sender;
@@ -43,13 +36,18 @@ contract Will {
         _;
     }
 
-    modifier notExecuted() {
-        require(!isExecuted, "Assets have already been distributed");
+    modifier onlyIfConfirmedDead() {
+        require(isConfirmedDead, "The owner is not confirmed dead");
         _;
     }
 
-    // Add beneficiary details with a release time
-    function addBeneficiary(
+    // Confirm owner's death, allowing claims to be triggered by anyone
+    function dead() public onlyOwner {
+        isConfirmedDead = true;
+    }
+
+    // Main function to add assets to a beneficiary
+    function addFund(
         address _beneficiary,
         uint256 _ethAmount,
         uint256 _tokenAmount,
@@ -58,29 +56,30 @@ contract Will {
         address _nftContract,
         uint256 _releaseTime
     ) public payable onlyOwner {
-        // Transfer ETH to contract if specified
-        if (_ethAmount > 0) {
-            require(msg.value == _ethAmount, "Incorrect ETH amount sent");
-        }
+        require(_beneficiary != address(0), "Invalid beneficiary address");
 
-        // Transfer ERC20 tokens to contract if specified
-        if (_tokenAmount > 0 && _erc20Token != address(0)) {
-            IERC20(_erc20Token).transferFrom(msg.sender, address(this), _tokenAmount);
-        }
+        // Check if the beneficiary already exists
+        uint256 index = beneficiaryIndex[_beneficiary];
 
-        // Handle NFT: Partial ownership setup
-        if (_nftContract != address(0) && _nftTokenId > 0) {
-            if (partialNFTs[_nftTokenId].shares == 0) {
-                // Initialize the NFT with 100 total shares if not already done
-                partialNFTs[_nftTokenId].tokenId = _nftTokenId;
-                partialNFTs[_nftTokenId].shares = 100;
-                IERC721(_nftContract).transferFrom(msg.sender, address(this), _nftTokenId);
-            }
-            // Assign 100% ownership if no fractional amount is specified
-            partialNFTs[_nftTokenId].ownerShares[_beneficiary] = 100;
+        if (index == 0) {
+            // Beneficiary does not exist, so add a new one
+            addBeneficiary(_beneficiary, _ethAmount, _tokenAmount, _erc20Token, _nftTokenId, _nftContract, _releaseTime);
+        } else {
+            // Beneficiary exists, so add more assets to their existing allocation
+            addMore(index - 1, _ethAmount, _tokenAmount, _erc20Token, _nftTokenId, _nftContract, _releaseTime);
         }
+    }
 
-        // Add beneficiary details to array
+    // Helper function to add a new beneficiary
+    function addBeneficiary(
+        address _beneficiary,
+        uint256 _ethAmount,
+        uint256 _tokenAmount,
+        address _erc20Token,
+        uint256 _nftTokenId,
+        address _nftContract,
+        uint256 _releaseTime
+    ) internal {
         beneficiaries.push(
             Beneficiary({
                 addr: _beneficiary,
@@ -92,19 +91,68 @@ contract Will {
                 nftContract: _nftContract
             })
         );
-    }
-    
-    // Function to claim assets (replaces death trigger)
-    // Beneficiaries can claim their assets after the release time
-    // This function can be called by anyone
-    // It will distribute assets to beneficiaries if the release time has passed
-    function claim() public notExecuted {
-        bool allDistributed = true;
 
+        // Map the address to the index in beneficiaries array (+1 to avoid default 0)
+        beneficiaryIndex[_beneficiary] = beneficiaries.length;
+
+        // Transfer ETH and tokens if specified
+        if (_ethAmount > 0) {
+            require(msg.value == _ethAmount, "Incorrect ETH amount sent");
+        }
+        if (_tokenAmount > 0 && _erc20Token != address(0)) {
+            IERC20(_erc20Token).transferFrom(msg.sender, address(this), _tokenAmount);
+        }
+        if (_nftContract != address(0) && _nftTokenId > 0) {
+            IERC721(_nftContract).transferFrom(msg.sender, address(this), _nftTokenId);
+        }
+    }
+
+    // Helper function to add more assets to an existing beneficiary
+    function addMore(
+        uint256 index,
+        uint256 _ethAmount,
+        uint256 _tokenAmount,
+        address _erc20Token,
+        uint256 _nftTokenId,
+        address _nftContract,
+        uint256 _releaseTime
+    ) internal {
+        Beneficiary storage beneficiary = beneficiaries[index];
+
+        // Add ETH to current allocation
+        beneficiary.ethAmount += _ethAmount;
+        if (_ethAmount > 0) {
+            require(msg.value == _ethAmount, "Incorrect ETH amount sent");
+        }
+
+        // Add ERC20 tokens to current allocation if it's the same token type
+        if (_tokenAmount > 0 && _erc20Token == beneficiary.erc20Token) {
+            beneficiary.tokenAmount += _tokenAmount;
+            IERC20(_erc20Token).transferFrom(msg.sender, address(this), _tokenAmount);
+        } else if (_tokenAmount > 0 && _erc20Token != beneficiary.erc20Token) {
+            // If different ERC20 token, update the allocation with new token type and amount
+            beneficiary.tokenAmount = _tokenAmount;
+            beneficiary.erc20Token = _erc20Token;
+            IERC20(_erc20Token).transferFrom(msg.sender, address(this), _tokenAmount);
+        }
+
+        // Update NFT allocation if a new NFT is specified
+        if (_nftContract != address(0) && _nftTokenId > 0 && (_nftTokenId != beneficiary.nftTokenId || _nftContract != beneficiary.nftContract)) {
+            beneficiary.nftTokenId = _nftTokenId;
+            beneficiary.nftContract = _nftContract;
+            IERC721(_nftContract).transferFrom(msg.sender, address(this), _nftTokenId);
+        }
+
+        // Update release time if specified
+        if (_releaseTime > 0) {
+            beneficiary.releaseTime = _releaseTime;
+        }
+    }
+
+    // Beneficiaries can claim assets if the owner is confirmed dead
+    function claim() public onlyIfConfirmedDead {
         for (uint256 i = 0; i < beneficiaries.length; i++) {
             Beneficiary storage beneficiary = beneficiaries[i];
-
-            // Check release time for each beneficiary
             if (block.timestamp >= beneficiary.releaseTime) {
                 // Transfer ETH
                 if (beneficiary.ethAmount > 0 && address(this).balance >= beneficiary.ethAmount) {
@@ -118,39 +166,16 @@ contract Will {
                     beneficiary.tokenAmount = 0;
                 }
 
-                // Handle fractional NFT
+                // Transfer NFT if specified
                 if (beneficiary.nftContract != address(0) && beneficiary.nftTokenId > 0) {
-                    uint256 shares = partialNFTs[beneficiary.nftTokenId].ownerShares[beneficiary.addr];
-                    if (shares > 0) {
-                        // You can add custom logic for fractional NFT transfers or ownership records here
-                        // For simplicity, assume full transfer if 100% ownership
-                        if (shares == 100) {
-                            IERC721(beneficiary.nftContract).transferFrom(address(this), beneficiary.addr, beneficiary.nftTokenId);
-                        }
-                        // Reset NFT shares
-                        partialNFTs[beneficiary.nftTokenId].ownerShares[beneficiary.addr] = 0;
-                    }
+                    IERC721(beneficiary.nftContract).transferFrom(address(this), beneficiary.addr, beneficiary.nftTokenId);
+                    beneficiary.nftTokenId = 0;
                 }
-            } else {
-                // Not all assets have been distributed yet due to release time
-                allDistributed = false;
             }
-        }
-
-        // Prevent re-execution if all assets are distributed
-        if (allDistributed) {
-            isExecuted = true;
         }
     }
 
-    // Allows contract to receive ether
+    // Allows the contract to receive ether directly
     receive() external payable {}
 }
-// 
-/*
-if beneficiary.allowance ->100usd
-if contract.catCheck(cat,address) = true;
-    initialise transaction
-else
-    revert
-*/
+
