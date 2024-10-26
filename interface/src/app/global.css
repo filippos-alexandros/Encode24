@@ -83,3 +83,10 @@ a {
 .templateSection > div {
   max-width: 100%;;
 }
+
+.hidden{
+  display: none;
+}
+.title{
+  font-size: 22px;
+}
