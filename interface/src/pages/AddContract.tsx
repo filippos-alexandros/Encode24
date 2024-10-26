@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { Wallet, Transaction, BaseProvider } from '@coinbase/onchainkit'; // Correct import
+import TransactionWrapper2 from "src/components/TransactionWrapper2";
+import { useAccount } from "wagmi";
+
 
 function AddContractPage() {
+  const { address } = useAccount();
   const [asset, setAsset] = useState("ETH");
   const [percentage, setPercentage] = useState("");
   const [recipientType, setRecipientType] = useState("customAddress");
@@ -46,6 +50,8 @@ function AddContractPage() {
       endDate: endDateIncluded ? endDate : null,
       amount: (totalAmounts[asset].amount * percentage) / 100,
     };
+
+    console.log(newWill)
 
     setWills([...wills, newWill]);
 
@@ -307,6 +313,10 @@ function AddContractPage() {
               >
                 Submit Intention
               </button>
+              
+              <br></br>
+              <br></br>
+              <TransactionWrapper2 address={address}/>
 
 
               <br />
