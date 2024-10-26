@@ -13,8 +13,7 @@ import type {
 import type { Address, ContractFunctionParameters } from 'viem';
 import {
   BASE_SEPOLIA_CHAIN_ID,
-  mintABI,
-  mintContractAddress,
+  willABI,
 } from '../constants';
 import { useNavigate } from 'react-router-dom';
 import { ethers } from 'ethers'
@@ -22,10 +21,12 @@ import { ethers } from 'ethers'
 
 export default function TransactionWrapper2({ address }: { address: Address }) {
 
+    const currentTransactionReceipts = localStorage.getItem('transactionReceipts');
+
     const contracts = [
         {
           address: "0x163953ffA8A7E1f60326035bA5a4837D240150C9",
-          abi: mintABI,
+          abi: willABI,
           functionName: 'deployWillContract',
           args: [],
         },

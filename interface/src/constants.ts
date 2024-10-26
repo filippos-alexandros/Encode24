@@ -1,6 +1,5 @@
 export const BASE_SEPOLIA_CHAIN_ID = 84532;
-export const mintContractAddress = '0xA3e40bBe8E8579Cd2619Ef9C6fEA362b760dac9f';
-export const mintABI = [
+export const deployABI = [
   {
     "type": "function",
     "name": "deployWillContract",
@@ -29,4 +28,296 @@ export const mintABI = [
   }
 ] as const;
 
+export const willABI = [
+  {
+    "type": "constructor",
+    "inputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "type": "receive",
+    "stateMutability": "payable"
+  },
+  {
+    "type": "function",
+    "name": "DEATH_INTERVAL",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "addFund",
+    "inputs": [
+      {
+        "name": "_beneficiary",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_ethAmount",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_ethReleaseTime",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_tokenAmount",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_tokenReleaseTime",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_erc20Token",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_nftTokenId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_nftReleaseTime",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_nftContract",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_restrictionCategory",
+        "type": "string",
+        "internalType": "string"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "type": "function",
+    "name": "beneficiaries",
+    "inputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "addr",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "ethAmount",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "ethReleaseTime",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "tokenAmount",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "tokenReleaseTime",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "nftTokenId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "nftReleaseTime",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "erc20Token",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "nftContract",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "restrictionCategory",
+        "type": "string",
+        "internalType": "string"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "beneficiaryIndex",
+    "inputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "checkDeath",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "claimInheritance",
+    "inputs": [
+      {
+        "name": "_beneficiaryAddress",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "dead",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "editDeathInterval",
+    "inputs": [
+      {
+        "name": "_deathInterval",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "isConfirmedDead",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "lastAliveTimestamp",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "owner",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "stillAlive",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "transferAssets",
+    "inputs": [
+      {
+        "name": "to",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "ethAmount",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "tokenAmount",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "updateRestrictionCategory",
+    "inputs": [
+      {
+        "name": "_beneficiary",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_restrictionCategory",
+        "type": "string",
+        "internalType": "string"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  }
+] as const;
 

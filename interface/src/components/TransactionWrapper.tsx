@@ -13,8 +13,7 @@ import type {
 import type { Address, ContractFunctionParameters } from 'viem';
 import {
   BASE_SEPOLIA_CHAIN_ID,
-  mintABI,
-  mintContractAddress,
+  deployABI,
 } from '../constants';
 import { useNavigate } from 'react-router-dom';
 import { ethers } from 'ethers'
@@ -27,7 +26,7 @@ export default function TransactionWrapper({ address }: { address: Address }) {
   const contracts = [
     {
       address: "0x163953ffA8A7E1f60326035bA5a4837D240150C9",
-      abi: mintABI,
+      abi: deployABI,
       functionName: 'deployWillContract',
       args: [],
     },
