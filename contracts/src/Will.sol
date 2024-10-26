@@ -11,71 +11,101 @@ interface IERC721 {
 }
 
 contract Will {
-    address public owner;
+    address public owner; 
     bool public isConfirmedDead;
     uint256 public lastAliveTimestamp;
     uint256 public DEATH_INTERVAL = 5 weeks;
-
+    
     struct Beneficiary {
-        address addr;
-        uint256 ethAmount;
-        uint256 ethReleaseTime;
-        uint256 tokenAmount;
-        uint256 tokenReleaseTime;
-        uint256 nftTokenId;
-        uint256 nftReleaseTime;
-        address erc20Token;
-        address nftContract;
-        string restrictionCategory;
+        address addr;// Address of the beneficiary
+        uint256 ethAmount;// Amount of ETH to be allocated
+        uint256 ethReleaseTime; // Time when the ETH can be released
+        uint256 tokenAmount; // Amount of ERC20 token to be allocated
+        uint256 tokenReleaseTime; // Time when the ERC20 token can be released
+        uint256 nftTokenId; // ID of the NFT to be allocated
+        uint256 nftReleaseTime; // Time when the NFT can be released
+        address erc20Token; // Address of the ERC20 token contract
+        address nftContract; // Address of the NFT contract
+        string restrictionCategory; // Category of restriction for the beneficiary
     }
 
     Beneficiary[] public beneficiaries;
     mapping(address => uint256) public beneficiaryIndex;
 
+    /*
+    @dev Constructor function to set the owner of the will contract
+    */
     constructor() payable {
         owner = msg.sender;
         isConfirmedDead = false;
         lastAliveTimestamp = block.timestamp;
     }
-
+    /*
+    @dev Modifier to check if the caller is the owner
+    */
     modifier onlyOwner() {
         require(msg.sender == owner, "Only owner can call this");
         _;
     }
-
+    /*
+    @dev Modifier to check if the caller is a beneficiary
+    */
     modifier onlyBeneficiary() {
         require(beneficiaryIndex[msg.sender] > 0, "Only beneficiary can call this");
         _;
     }
-
+    /*
+    @dev Modifier to check if the owner is confirmed dead
+    */
     modifier onlyIfConfirmedDead() {
         require(isConfirmedDead, "The owner is not confirmed dead");
         _;
     }
 
-    // Edit death interval
+    /*
+    @dev Alter the death interval
+    */
     function editDeathInterval(uint256 _deathInterval) public onlyOwner {
         DEATH_INTERVAL = _deathInterval;
     }
 
-    // Update lastAliveTimestamp to reset death interval countdown
+    
+    /*
+    @dev Update lastAliveTimestamp to reset death interval countdown
+    */
     function stillAlive() public onlyOwner {
         lastAliveTimestamp = block.timestamp;
     }
 
-    // Check death status based on inactivity
+    /*
+    @dev Check if the owner is dead
+    */
     function checkDeath() public {
         if (block.timestamp >= lastAliveTimestamp + DEATH_INTERVAL) {
             isConfirmedDead = true;
         }
     }
 
-    // Confirm death directly by oracle
+    /*
+    @dev Confirm the owner is dead
+    */
     function dead() public {
         isConfirmedDead = true;
     }
 
-    // Main function to add assets to a beneficiary
+    /*
+    @dev Add fund to existing beneficiary or add new beneficiary, you should only interact with this function for funds allocation
+    @param _beneficiary: Address of the beneficiary
+    @param _ethAmount: Amount of ETH to be allocated
+    @param _ethReleaseTime: Time when the ETH can be released
+    @param _tokenAmount: Amount of ERC20 token to be allocated
+    @param _tokenReleaseTime: Time when the ERC20 token can be released
+    @param _erc20Token: Address of the ERC20 token contract
+    @param _nftTokenId: ID of the NFT to be allocated
+    @param _nftReleaseTime: Time when the NFT can be released
+    @param _nftContract: Address of the NFT contract
+    @param _restrictionCategory: Category of restriction for the beneficiary
+    */
     function addFund(
         address _beneficiary,
         uint256 _ethAmount,
@@ -99,7 +129,19 @@ contract Will {
         }
     }
 
-    // Add a new beneficiary
+    /*
+    @dev Add new beneficiary
+    @param _beneficiary: Address of the beneficiary
+    @param _ethAmount: Amount of ETH to be allocated
+    @param _ethReleaseTime: Time when the ETH can be released
+    @param _tokenAmount: Amount of ERC20 token to be allocated
+    @param _tokenReleaseTime: Time when the ERC20 token can be released
+    @param _erc20Token: Address of the ERC20 token contract
+    @param _nftTokenId: ID of the NFT to be allocated
+    @param _nftReleaseTime: Time when the NFT can be released
+    @param _nftContract: Address of the NFT contract
+    @param _restrictionCategory: Category of restriction for the beneficiary
+    */
     function addBeneficiary(
         address _beneficiary,
         uint256 _ethAmount,
@@ -140,7 +182,19 @@ contract Will {
         }
     }
 
-    // Add more assets to an existing beneficiary
+    /*
+    @dev Add more fund to existing beneficiary
+    @param index: Index of the beneficiary in the array
+    @param _ethAmount: Amount of ETH to be allocated
+    @param _ethReleaseTime: Time when the ETH can be released
+    @param _tokenAmount: Amount of ERC20 token to be allocated
+    @param _tokenReleaseTime: Time when the ERC20 token can be released
+    @param _erc20Token: Address of the ERC20 token contract
+    @param _nftTokenId: ID of the NFT to be allocated
+    @param _nftReleaseTime: Time when the NFT can be released
+    @param _nftContract: Address of the NFT contract
+    @param _restrictionCategory: Category of restriction for the beneficiary
+    */
     function addMore(
         uint256 index,
         uint256 _ethAmount,
@@ -184,15 +238,32 @@ contract Will {
         
     }
 
-    // Update restriction category for a beneficiary
+    /*
+    @dev Update fund allocation for existing beneficiary
+    @param _beneficiary: Address of the beneficiary
+    @param _ethAmount: Amount of ETH to be allocated
+    @param _ethReleaseTime: Time when the ETH can be released
+    @param _tokenAmount: Amount of ERC20 token to be allocated
+    @param _tokenReleaseTime: Time when the ERC20 token can be released
+    @param _erc20Token: Address of the ERC20 token contract
+    @param _nftTokenId: ID of the NFT to be allocated
+    @param _nftReleaseTime: Time when the NFT can be released
+    @param _nftContract: Address of the NFT contract
+    @param _restrictionCategory: Category of restriction for the beneficiary
+    */
     function updateRestrictionCategory(address _beneficiary, string memory _restrictionCategory) public onlyOwner {
         uint256 index = beneficiaryIndex[_beneficiary];
         require(index > 0, "Beneficiary not found");
         beneficiaries[index - 1].restrictionCategory = _restrictionCategory;
     }
 
-    // Claim inheritance for beneficiaries after the owner is confirmed dead
-    // Everyone can call this function to claim for the beneficiary
+
+    /*
+    @dev Claim inheritance for beneficiaries after the owner is confirmed dead, 
+    claim inheritance for beneficiaries after the owner is confirmed dead, 
+    everyone can call this function to claim for the beneficiary
+    @param _beneficiaryAddress: Address of the beneficiary
+    */
     function claimInheritance(address _beneficiaryAddress) public onlyIfConfirmedDead {
         uint256 index = beneficiaryIndex[_beneficiaryAddress];
         require(index > 0, "Beneficiary not found");
@@ -221,13 +292,22 @@ contract Will {
         }
     }
 
-    // Function to check if the restriction category is "none"
+    /*
+    @dev Check if the restriction category is valid
+    @param _restrictionCategory: Category of restriction for the beneficiary
+    */
     function catCheckPass(string memory /*_restrictionCategory*/) internal pure returns (bool) {
         // Base verifiction
         return true;
     }
 
-    // Function for beneficiaries to transfer part of their allocated assets to a specified address
+    
+    /*
+    @dev Transfer assets to another address, if test restriction category is passed
+    @param to: Address to transfer assets to
+    @param ethAmount: Amount of ETH to transfer
+    @param tokenAmount: Amount of ERC20 token to transfer
+    */
     function transferAssets(
         address to,
         uint256 ethAmount, 
@@ -235,7 +315,7 @@ contract Will {
     ) public onlyBeneficiary {
         uint256 index = beneficiaryIndex[msg.sender];
         Beneficiary storage beneficiary = beneficiaries[index - 1];
-
+        // Ensure recipient address is valid
         require(to != address(0), "Invalid recipient address");
 
         // Ensure restriction category is not "none"
@@ -257,6 +337,6 @@ contract Will {
         }
     }
     
-
+    
     receive() external payable {}
 }
