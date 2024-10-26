@@ -13,7 +13,22 @@ interface IERC721 {
 contract Will {
     address public owner;
     bool public isConfirmedDead;
+    uint256 public lastAliveTimestamp;
+    uint256 public constant DEATH_INTERVAL = 5 weeks;
+    function editDeathInterval(uint256 _deathInterval) public onlyOwner {
+        DEATH_INTERVAL = _deathInterval;
+    }
+    // Update the last alive timestamp to extend the deadline
+    function stillAlive() public onlyOwner {
+        lastAliveTimestamp = block.timestamp;
+    }
 
+    // Check if the death interval has passed
+    function checkDeath() public {
+        if (block.timestamp >= lastAliveTimestamp + DEATH_INTERVAL) {
+            isConfirmedDead = true;
+        }
+    }
     struct Beneficiary {
         address addr;
         uint256 ethAmount;
@@ -42,6 +57,7 @@ contract Will {
     }
 
     // Confirm owner's death, allowing claims to be triggered by anyone
+    // oracle port 
     function dead() public onlyOwner {
         isConfirmedDead = true;
     }
@@ -150,6 +166,8 @@ contract Will {
     }
 
     // Beneficiaries can claim assets if the owner is confirmed dead
+    // Assets will be transferred directly to the beneficiary
+    // Everyone can call this function, but assets will only be transferred to the beneficiaries
     function claim() public onlyIfConfirmedDead {
         for (uint256 i = 0; i < beneficiaries.length; i++) {
             Beneficiary storage beneficiary = beneficiaries[i];
