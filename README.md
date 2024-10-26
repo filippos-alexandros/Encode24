@@ -66,7 +66,7 @@ Initializes the contract, setting the owner and the initial lastAliveTimestamp.
 ## Example Usage
 - **Adding Funds**
 - ```
-will.addFund(
+-will.addFund(
     beneficiaryAddress,
     ethAmount,
     ethReleaseTime,
@@ -81,11 +81,11 @@ will.addFund(
 );```
 - **Claiming Inheritance**
 - ```
-will.claimInheritance(beneficiaryAddress);
+-will.claimInheritance(beneficiaryAddress);
 - ```
 - **Transferring Assets**
 - ```
-will.transferAssets(recipientAddress, ethAmount, tokenAmount);
+-will.transferAssets(recipientAddress, ethAmount, tokenAmount);
 - ```
 
 ## Deployment
