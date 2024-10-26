@@ -26,6 +26,7 @@ contract Will {
         uint256 nftReleaseTime;
         address erc20Token;
         address nftContract;
+        string restrictionCategory;
     }
 
     Beneficiary[] public beneficiaries;
@@ -70,7 +71,6 @@ contract Will {
     }
 
     // Confirm death directly by oracle
-    // NO RESTRICTION FOR NOWWWWWWWWW
     function dead() public {
         isConfirmedDead = true;
     }
@@ -85,16 +85,17 @@ contract Will {
         address _erc20Token,
         uint256 _nftTokenId,
         uint256 _nftReleaseTime,
-        address _nftContract
+        address _nftContract,
+        string memory _restrictionCategory
     ) public payable onlyOwner {
         require(_beneficiary != address(0), "Invalid beneficiary address");
 
         uint256 index = beneficiaryIndex[_beneficiary];
 
         if (index == 0) {
-            addBeneficiary(_beneficiary, _ethAmount, _ethReleaseTime, _tokenAmount, _tokenReleaseTime, _erc20Token, _nftTokenId, _nftReleaseTime, _nftContract);
+            addBeneficiary(_beneficiary, _ethAmount, _ethReleaseTime, _tokenAmount, _tokenReleaseTime, _erc20Token, _nftTokenId, _nftReleaseTime, _nftContract, _restrictionCategory);
         } else {
-            addMore(index - 1, _ethAmount, _ethReleaseTime, _tokenAmount, _tokenReleaseTime, _erc20Token, _nftTokenId, _nftReleaseTime, _nftContract);
+            addMore(index - 1, _ethAmount, _ethReleaseTime, _tokenAmount, _tokenReleaseTime, _erc20Token, _nftTokenId, _nftReleaseTime, _nftContract, _restrictionCategory);
         }
     }
 
@@ -108,7 +109,8 @@ contract Will {
         address _erc20Token,
         uint256 _nftTokenId,
         uint256 _nftReleaseTime,
-        address _nftContract
+        address _nftContract,
+        string memory _restrictionCategory
     ) internal {
         beneficiaries.push(
             Beneficiary({
@@ -120,7 +122,8 @@ contract Will {
                 nftTokenId: _nftTokenId,
                 nftReleaseTime: _nftReleaseTime,
                 erc20Token: _erc20Token,
-                nftContract: _nftContract
+                nftContract: _nftContract,
+                restrictionCategory: _restrictionCategory
             })
         );
 
@@ -136,6 +139,7 @@ contract Will {
             IERC721(_nftContract).transferFrom(msg.sender, address(this), _nftTokenId);
         }
     }
+
     // Add more assets to an existing beneficiary
     function addMore(
         uint256 index,
@@ -146,7 +150,8 @@ contract Will {
         address _erc20Token,
         uint256 _nftTokenId,
         uint256 _nftReleaseTime,
-        address _nftContract
+        address _nftContract,
+        string memory _restrictionCategory
     ) internal {
         Beneficiary storage beneficiary = beneficiaries[index];
 
@@ -176,6 +181,14 @@ contract Will {
             beneficiary.nftReleaseTime = _nftReleaseTime;
             IERC721(_nftContract).transferFrom(msg.sender, address(this), _nftTokenId);
         }
+        
+    }
+
+    // Update restriction category for a beneficiary
+    function updateRestrictionCategory(address _beneficiary, string memory _restrictionCategory) public onlyOwner {
+        uint256 index = beneficiaryIndex[_beneficiary];
+        require(index > 0, "Beneficiary not found");
+        beneficiaries[index - 1].restrictionCategory = _restrictionCategory;
     }
 
     // Claim inheritance for beneficiaries after the owner is confirmed dead
@@ -184,6 +197,9 @@ contract Will {
         uint256 index = beneficiaryIndex[msg.sender];
         Beneficiary storage beneficiary = beneficiaries[index - 1];
         uint256 currentTime = block.timestamp;
+
+        // Ensure restriction category is "none"
+        require(keccak256(abi.encodePacked(beneficiary.restrictionCategory)) == keccak256(abi.encodePacked("none")), "Cannot claim inheritance with restrictions");
 
         // Transfer ETH if release time is met
         if (beneficiary.ethAmount > 0 && currentTime >= beneficiary.ethReleaseTime) {
@@ -209,16 +225,15 @@ contract Will {
     function transferAssets(
         address to,
         uint256 ethAmount, 
-        uint256 tokenAmount, 
-        uint8 category
+        uint256 tokenAmount
     ) public onlyBeneficiary {
         uint256 index = beneficiaryIndex[msg.sender];
         Beneficiary storage beneficiary = beneficiaries[index - 1];
 
         require(to != address(0), "Invalid recipient address");
 
-        // Check the category condition
-        require(categoryCheck(category), "Category check failed");
+        // Ensure restriction category is not "none"
+        require(keccak256(abi.encodePacked(beneficiary.restrictionCategory)) != keccak256(abi.encodePacked("none")), "Cannot transfer assets with 'none' restriction");
 
         // ETH Transfer
         if (ethAmount > 0) {
@@ -234,12 +249,6 @@ contract Will {
             beneficiary.tokenAmount -= tokenAmount;
             IERC20(beneficiary.erc20Token).transfer(to, tokenAmount);
         }
-    }
-
-    // Example of a category check function
-    // NOT IMPLEMENTED YET
-    function categoryCheck(uint8 category) internal pure returns (bool) {
-        return true; 
     }
 
     receive() external payable {}
