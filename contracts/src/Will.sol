@@ -7,17 +7,17 @@ interface IERC20 {
 }
 
 interface IERC721 {
-    function transferFrom(address from, address to, uint256 tokenId) external;
-}
-
+        function transferFrom(address from, address to, uint256 tokenId) external;
+    }
 // Define partial NFT ownership structure
 // We assume that the NFT contract is ERC721 compliant
 struct PartialNFT {
     uint256 tokenId;
     uint256 shares; // Total shares
     mapping(address => uint256) ownerShares; // Each owner's share
-}
+    }
 contract Will {
+
     address public owner;
     bool public isExecuted;
     
@@ -146,3 +146,11 @@ contract Will {
     // Allows contract to receive ether
     receive() external payable {}
 }
+// 
+/*
+if beneficiary.allowance ->100usd
+if contract.catCheck(cat,address) = true;
+    initialise transaction
+else
+    revert
+*/
