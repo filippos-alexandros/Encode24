@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { Wallet, Transaction, BaseProvider } from '@coinbase/onchainkit'; // Correct import
-import { ethers } from 'ethers'
-import { mintABI } from "src/constants";
 
-async function AddContractPage(this: any) {
+function AddContractPage() {
   const [asset, setAsset] = useState("ETH");
   const [percentage, setPercentage] = useState("");
   const [recipientType, setRecipientType] = useState("customAddress");
@@ -26,48 +24,15 @@ async function AddContractPage(this: any) {
   const provider =  BaseProvider// Initialize your provider
 
   const transactionHash =  getLatestTransactionHash();
-  let eventArgs;
-
-
-  // Ethers
-
-  // Get the transaction receipt
-  async function ethansFunction(transactionHash: string) { // Specify transactionHash parameter
-
-    const ethersprovider = new ethers.providers.JsonRpcProvider('https://sepolia.base.org'); // Replace with your RPC URL
-    const receipt = await ethersprovider.getTransactionReceipt(transactionHash);
-
-    if (receipt && receipt.logs) {
-      // Parse the logs for emitted events
-      const iface = new ethers.utils.Interface(mintABI);
-      const events = receipt.logs
-        .map(log => {
-          try {
-            return iface.parseLog(log);
-          } catch (e) {
-            return null; // Ignore logs that aren't from your contract
-          }
-        })
-        .filter(event => event !== null);
-
-      // Log the emitted events
-      events.forEach(event => {
-        console.log(`Event: ${event.name}`, event.args);
-        eventArgs = event.args // This doesn't need to be inside the loop
-        console.log(eventArgs)
-      });
-    }
-  }
-
   console.log(transactionHash)
   function getLatestTransactionHash() {
     const currentHashes = localStorage.getItem('transactionHashes');
-
+  
     if (currentHashes) {
       const transactionHashes = JSON.parse(currentHashes) as string[];
       return transactionHashes[transactionHashes.length - 1]; 
     } else {
-      return ; ''// Or an appropriate default value if no hashes are found
+      return null; // Or an appropriate default value if no hashes are found
     }
   }
   const handleSubmit = async () => {
