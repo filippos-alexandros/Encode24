@@ -54,3 +54,6 @@ export default function SmartContractWrapper({ address }: { address: Address }) 
     </div>
   );
 }
+
+
+

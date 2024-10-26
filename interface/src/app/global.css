@@ -88,5 +88,13 @@ a {
   display: none;
 }
 .title{
-  font-size: 22px;
+  font-size: 26px;
+  font-weight: bold;
+}
+.subtitle{
+  font-size: 20px;
+  font-weight: bold;
+}
+.bold{
+  font-weight: bold;
 }
