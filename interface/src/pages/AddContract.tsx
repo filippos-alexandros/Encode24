@@ -20,11 +20,8 @@ function AddContractPage() {
     USDC: { amount: 150, percentage: 100, basePercentage: 100 },
   });
 
-  const handleAddAddress = () => {
-    setCustomAddresses([...customAddresses, ""]);
-  };
-
   const handleSubmit = () => {
+
     const newWill = {
       asset,
       percentage,
@@ -72,10 +69,14 @@ function AddContractPage() {
     setPercentage(e.target.value);
   };
 
+  const handleAddAddress = () => {
+    setCustomAddresses([...customAddresses, ""]);
+  };
+
   return (
     <div
       style={{
-        backgroundColor: "#e7e7e7",
+        backgroundColor: "",
         padding: "1em",
         borderRadius: "5px",
         margin: "10px",
@@ -90,6 +91,7 @@ function AddContractPage() {
               <h3 className="subtitle">Select Asset</h3>
               <select
                 style={{
+                  border: "1px solid #d9d7d7",
                   minWidth: "300px",
                   width: "50%",
                   padding: "5px",
@@ -108,6 +110,7 @@ function AddContractPage() {
               <h3 className="subtitle">Determine Percentage</h3>
               <input
                 style={{
+                  border: "1px solid #d9d7d7",
                   minWidth: "300px",
                   width: "50%",
                   padding: "5px",
@@ -152,6 +155,7 @@ function AddContractPage() {
                     <div key={index}>
                       <input
                         style={{
+                          border: "1px solid #d9d7d7",
                           minWidth: "300px",
                           width: "50%",
                           padding: "5px",
@@ -177,6 +181,7 @@ function AddContractPage() {
                   <h4>Categories</h4>
                   <select
                     style={{
+                      border: "1px solid #d9d7d7",
                       minWidth: "300px",
                       width: "50%",
                       padding: "5px",
@@ -186,7 +191,7 @@ function AddContractPage() {
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
                   >
-                    <option value="unrestrained">Unrestrained</option>
+                    
                     <option value="universities">Universities</option>
                     <option value="healthcare">Healthcare</option>
                     <option value="food">Food</option>
@@ -207,7 +212,7 @@ function AddContractPage() {
                     checked={startDateIncluded}
                     onChange={() => setStartDateIncluded(!startDateIncluded)}
                   />
-                  Include Start Date
+                   Include Start Date
                 </label>
                 <br />
                 {startDateIncluded && (
@@ -216,6 +221,7 @@ function AddContractPage() {
                     value={startDate}
                     onChange={(e) => setStartDate(e.target.value)}
                     style={{
+                      border: "1px solid #d9d7d7",
                       minWidth: "300px",
                       width: "50%",
                       padding: "5px",
@@ -240,6 +246,7 @@ function AddContractPage() {
                     value={endDate}
                     onChange={(e) => setEndDate(e.target.value)}
                     style={{
+                      border: "1px solid #d9d7d7",
                       minWidth: "300px",
                       width: "50%",
                       padding: "5px",
@@ -273,6 +280,7 @@ function AddContractPage() {
                       marginBottom: "10px",
                       padding: "10px",
                       border: "1px solid #ccc",
+                      borderRadius: "3px",
                     }}
                   >
                     <p>
