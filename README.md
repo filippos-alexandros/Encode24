@@ -1,10 +1,10 @@
 # Will Smart Contract
 # Encode 24
 # Reward: Best Real World Blockchain Use Case (with mock-up demo)
-
+## Summary
 ## Overview
 The Will smart contract manages the inheritance of assets, including ETH, ERC20 tokens, and NFTs. The contract allows the owner to allocate assets to beneficiaries with specific release times and restriction categories. Beneficiaries can claim their inheritance after the owner's death is confirmed. Additionally, beneficiaries can transfer part of their allocated assets to another address, subject to certain restrictions.
-
+## Image of the demo
 ## Features
 - **Add Funds**: The owner can allocate ETH, ERC20 tokens, and NFTs to beneficiaries with specified release times and restriction categories.
 - **Confirm Death**: The owner's death can be confirmed either by inactivity or directly by an oracle.
@@ -23,7 +23,7 @@ The Will smart contract manages the inheritance of assets, including ETH, ERC20 
 
 ### Structs
 - **Beneficiary**
-```
+```Solidity
 struct Beneficiary {
     address addr;
     uint256 ethAmount;
@@ -41,7 +41,9 @@ struct Beneficiary {
 
 #### Constructor
 Initializes the contract, setting the owner and the initial lastAliveTimestamp.
-
+```Solidity
+constructor() payable
+```
 #### Modifiers
 - **onlyOwner**: Ensures that only the owner can call the function.
 - **onlyBeneficiary**: Ensures that only a beneficiary can call the function.
@@ -65,7 +67,7 @@ Initializes the contract, setting the owner and the initial lastAliveTimestamp.
 
 ## Example Usage
 - **Adding Funds**
-```
+```Solidity
 will.addFund(
     beneficiaryAddress,
     ethAmount,
@@ -81,11 +83,11 @@ will.addFund(
 );
 ```
 - **Claiming Inheritance**
-```
+```Solidity
 will.claimInheritance(beneficiaryAddress);
 ```
 - **Transferring Assets**
-```
+```Solidity
 will.transferAssets(recipientAddress, ethAmount, tokenAmount);
 ```
 
