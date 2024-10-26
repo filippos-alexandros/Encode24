@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Wallet, Transaction, BaseProvider } from '@coinbase/onchainkit'; // Correct import
 
 function AddContractPage() {
   const [asset, setAsset] = useState("ETH");
@@ -20,8 +21,10 @@ function AddContractPage() {
     USDC: { amount: 150, percentage: 100, basePercentage: 100 },
   });
 
-  const handleSubmit = () => {
+  const provider =  BaseProvider// Initialize your provider
 
+  
+  const handleSubmit = async () => {
     const newWill = {
       asset,
       percentage,
@@ -47,6 +50,30 @@ function AddContractPage() {
         },
       };
     });
+
+  // --- SUBMIT TRANSACTION - STARTS -------------
+
+    // OnchainKit Transaction component usage
+    try {
+      const tx = await Transaction.create(provider, {
+        // to: 'YOUR_CONTRACT_ADDRESS', // Replace with your actual contract address
+        // data: 'YOUR_CONTRACT_ABI_ENCODED_FUNCTION_CALL', // Encode the function call with your contract ABI
+        // value: 'AMOUNT_IN_WEI', // If you need to send ETH with the transaction
+      });
+
+      // This will prompt the user to confirm the transaction in their wallet
+      const txResponse = await tx.send(); 
+
+      console.log("Transaction response:", txResponse);
+
+      // ... your logic to update state or perform other actions after successful transaction ...
+
+    } catch (error) {
+      console.error("Transaction error:", error);
+      // Handle the error appropriately (e.g., display an error message to the user)
+    }
+
+  // --- SUBMIT TRANSACTION - ENDS ---------------
 
     setPercentage("");
     setWarning("");
@@ -263,11 +290,14 @@ function AddContractPage() {
                   padding: "10px",
                   backgroundColor: "#007BFF",
                   color: "#FFF",
+                  borderRadius: "5px"
                 }}
                 disabled={Boolean(warning)}
               >
                 Submit Intention
               </button>
+
+
               <br />
               <br />
               <hr />
