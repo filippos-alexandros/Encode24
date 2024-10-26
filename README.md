@@ -78,7 +78,8 @@ will.addFund(
     nftContractAddress,
     restrictionCategory
 
-);```
+);
+```
 - **Claiming Inheritance**
 ```
 will.claimInheritance(beneficiaryAddress);
