@@ -23,6 +23,7 @@ The Will smart contract manages the inheritance of assets, including ETH, ERC20 
 
 ### Structs
 - **Beneficiary**
+```
 - struct Beneficiary {
     address addr;
     uint256 ethAmount;
@@ -35,7 +36,7 @@ The Will smart contract manages the inheritance of assets, including ETH, ERC20 
     address nftContract;
     string restrictionCategory;
 }
-
+```
 ### Functions
 
 #### Constructor
@@ -47,6 +48,7 @@ Initializes the contract, setting the owner and the initial lastAliveTimestamp.
 - **onlyIfConfirmedDead**: Ensures that the owner's death is confirmed before calling the function.
 
 #### Public Functions
+
 - `editDeathInterval(uint256 _deathInterval)`: Allows the owner to edit the death interval.
 - `stillAlive()`: Updates the lastAliveTimestamp to reset the death interval countdown.
 - `checkDeath()`: Checks the death status based on inactivity.
@@ -63,6 +65,7 @@ Initializes the contract, setting the owner and the initial lastAliveTimestamp.
 
 ## Example Usage
 - **Adding Funds**
+- ```
 - will.addFund(
     beneficiaryAddress,
     ethAmount,
@@ -74,11 +77,16 @@ Initializes the contract, setting the owner and the initial lastAliveTimestamp.
     nftReleaseTime,
     nftContractAddress,
     restrictionCategory
-);
+
+);```
 - **Claiming Inheritance**
+- ```
 - will.claimInheritance(beneficiaryAddress);
+- ```
 - **Transferring Assets**
+- ```
 - will.transferAssets(recipientAddress, ethAmount, tokenAmount);
+- ```
 
 ## Deployment
 To deploy the contract, use the following steps:
