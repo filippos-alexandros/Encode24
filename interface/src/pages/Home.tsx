@@ -11,11 +11,11 @@ import LoginButton from "../components/LoginButton";
 import SignupButton from "../components/SignupButton";
 import SmartContractWrapper from "src/components/SmartContractWrapper";
 
+
 function HomePage() {
   const { address } = useAccount();
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate(); // Define navigate here
-
 
   interface CompiledContract {
     abi: any;
@@ -30,45 +30,15 @@ function HomePage() {
   const handleConfirmTransaction = () => {
     // Here you would add the logic to actually create the smart contract
     // For now, we'll just hide the modal
-    setShowModal(false);
+    // setShowModal(false);
 
 
     // HERE WE SHOULD DEPLOY THE CONTRACT
-      const sepoliaRpcUrl = "https://api.developer.coinbase.com/rpc/v1/base-sepolia/undefined";
-      // "https://sepolia.infura.io/v3/your_project_id"
-      const privateKey = "";
-
-      if (!sepoliaRpcUrl || !privateKey) {
-        throw new Error("Environment variables for RPC URL and Private Key are required.");
-      }
-
-      const onchainKit = new OnchainKit({
-        network: "sepolia",
-        rpcUrl: sepoliaRpcUrl,
-        privateKey,
-      });
-
-      // Assume compiledContract is available here as an example
-      const compiledContract: CompiledContract = {
-        abi: [{"type":"constructor","inputs":[],"stateMutability":"payable"},{"type":"receive","stateMutability":"payable"},{"type":"function","name":"DEATH_INTERVAL","inputs":[],"outputs":[{"name":"","type":"uint256","internalType":"uint256"}],"stateMutability":"view"},{"type":"function","name":"addFund","inputs":[{"name":"_beneficiary","type":"address","internalType":"address"},{"name":"_ethAmount","type":"uint256","internalType":"uint256"},{"name":"_ethReleaseTime","type":"uint256","internalType":"uint256"},{"name":"_tokenAmount","type":"uint256","internalType":"uint256"},{"name":"_tokenReleaseTime","type":"uint256","internalType":"uint256"},{"name":"_erc20Token","type":"address","internalType":"address"},{"name":"_nftTokenId","type":"uint256","internalType":"uint256"},{"name":"_nftReleaseTime","type":"uint256","internalType":"uint256"},{"name":"_nftContract","type":"address","internalType":"address"},{"name":"_restrictionCategory","type":"string","internalType":"string"}],"outputs":[],"stateMutability":"payable"},{"type":"function","name":"beneficiaries","inputs":[{"name":"","type":"uint256","internalType":"uint256"}],"outputs":[{"name":"addr","type":"address","internalType":"address"},{"name":"ethAmount","type":"uint256","internalType":"uint256"},{"name":"ethReleaseTime","type":"uint256","internalType":"uint256"},{"name":"tokenAmount","type":"uint256","internalType":"uint256"},{"name":"tokenReleaseTime","type":"uint256","internalType":"uint256"},{"name":"nftTokenId","type":"uint256","internalType":"uint256"},{"name":"nftReleaseTime","type":"uint256","internalType":"uint256"},{"name":"erc20Token","type":"address","internalType":"address"},{"name":"nftContract","type":"address","internalType":"address"},{"name":"restrictionCategory","type":"string","internalType":"string"}],"stateMutability":"view"},{"type":"function","name":"beneficiaryIndex","inputs":[{"name":"","type":"address","internalType":"address"}],"outputs":[{"name":"","type":"uint256","internalType":"uint256"}],"stateMutability":"view"},{"type":"function","name":"checkDeath","inputs":[],"outputs":[],"stateMutability":"nonpayable"},{"type":"function","name":"claimInheritance","inputs":[{"name":"_beneficiaryAddress","type":"address","internalType":"address"}],"outputs":[],"stateMutability":"nonpayable"},{"type":"function","name":"dead","inputs":[],"outputs":[],"stateMutability":"nonpayable"},{"type":"function","name":"editDeathInterval","inputs":[{"name":"_deathInterval","type":"uint256","internalType":"uint256"}],"outputs":[],"stateMutability":"nonpayable"},{"type":"function","name":"isConfirmedDead","inputs":[],"outputs":[{"name":"","type":"bool","internalType":"bool"}],"stateMutability":"view"},{"type":"function","name":"lastAliveTimestamp","inputs":[],"outputs":[{"name":"","type":"uint256","internalType":"uint256"}],"stateMutability":"view"},{"type":"function","name":"owner","inputs":[],"outputs":[{"name":"","type":"address","internalType":"address"}],"stateMutability":"view"},{"type":"function","name":"stillAlive","inputs":[],"outputs":[],"stateMutability":"nonpayable"},{"type":"function","name":"transferAssets","inputs":[{"name":"to","type":"address","internalType":"address"},{"name":"ethAmount","type":"uint256","internalType":"uint256"},{"name":"tokenAmount","type":"uint256","internalType":"uint256"}],"outputs":[],"stateMutability":"nonpayable"},{"type":"function","name":"updateRestrictionCategory","inputs":[{"name":"_beneficiary","type":"address","internalType":"address"},{"name":"_restrictionCategory","type":"string","internalType":"string"}],"outputs":[],"stateMutability":"nonpayable"}],
-        bytecode: "0x..." // Bytecode string here
-      };
-
-      try {
-        console.log("Deploying contract...");
-
-        // Deploy the contract
-        const contract = await onchainKit.deploy(compiledContract.abi, compiledContract.bytecode, []);
-
-        console.log("Contract deployed at address:", contract.options.address);
-      } catch (error) {
-        console.error("Error deploying contract:", error);
-      }      
-
+    // TransactionWrapper(address)
     // 
 
     // AFTER CONTRACT IS CREATED WE GO TO THE FORM
-    navigate('/add-smart-contract'); 
+    // navigate('/add-smart-contract'); 
 
   };
 
@@ -166,6 +136,12 @@ function HomePage() {
                 </p>{" "}
                 {/* You'll need to calculate and display the actual cost */}
               </div>
+
+              <br></br>
+
+              <TransactionWrapper address={address}/>
+
+
               <div className="modal-footer">
                 <button
                   style={{
@@ -182,25 +158,6 @@ function HomePage() {
                 >
                   Cancel
                 </button>
-
-
-                <button
-                  style={{ // this button could probably be replaced by Transaction button 
-                  marginTop: "20px",
-                  marginLeft: "20px",
-                  padding: "10px",
-                  backgroundColor: "#007BFF",
-                  color: "#FFF",
-                  borderRadius: "5px"
-                }}
-
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={handleConfirmTransaction}
-                >
-                  I Confirm Smart Contract Creation
-                </button>
-
 
 
               </div>

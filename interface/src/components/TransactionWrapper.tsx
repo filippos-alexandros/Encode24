@@ -20,10 +20,10 @@ import {
 export default function TransactionWrapper({ address }: { address: Address }) {
   const contracts = [
     {
-      address: mintContractAddress,
+      address: "0x163953ffA8A7E1f60326035bA5a4837D240150C9",
       abi: mintABI,
-      functionName: 'mint',
-      args: [address],
+      functionName: 'deployWillContract',
+      args: [],
     },
   ] as unknown as ContractFunctionParameters[];
 
@@ -53,3 +53,4 @@ export default function TransactionWrapper({ address }: { address: Address }) {
     </div>
   );
 }
+
