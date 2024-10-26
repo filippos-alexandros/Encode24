@@ -33,6 +33,7 @@ contract Will {
 
     constructor() payable {
         owner = msg.sender;
+        isConfirmedDead = false;
         lastAliveTimestamp = block.timestamp;
     }
 
@@ -206,7 +207,7 @@ contract Will {
 
     // Function for beneficiaries to transfer part of their allocated assets to a specified address
     function transferAssets(
-        address to, 
+        address to,
         uint256 ethAmount, 
         uint256 tokenAmount, 
         uint8 category
