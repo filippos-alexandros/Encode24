@@ -90,6 +90,15 @@ export default function TransactionWrapper({ address }: { address: Address }) {
         if (receipt) {
           // Use the transaction receipt here
           console.log("Transaction receipt:", receipt);
+          
+          // Get the existing transactionReceipts array from localStorage, or initialize an empty array
+          let currentTransactionReceipts = localStorage.getItem('transactionReceipts');
+          let transactionReceipts: any[] = currentTransactionReceipts ? JSON.parse(currentTransactionReceipts) : [];
+          // Add the new transaction receipt to the array
+          transactionReceipts.push(receipt); 
+          // Store the updated array back in localStorage
+          localStorage.setItem('transactionReceipts', JSON.stringify(transactionReceipts));
+          
         } else {
           // Handle the case where the receipt was not found or there was an error
           console.error("Transaction receipt not found.");
