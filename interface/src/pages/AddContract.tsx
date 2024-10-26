@@ -27,6 +27,8 @@ function AddContractPage() {
 
     // Add new will to list of wills and clear form fields
     setWills([...wills, newWill]);
+    console.log(wills)
+    console.log(newWill)
     setAmount('');
     setCustomAddresses(['']);
     setCategory('unrestrained');
