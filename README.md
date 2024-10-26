@@ -1,4 +1,4 @@
-# Will Smart Contract
+# Based Legacy
 # Encode 24
 # Reward: Best Real World Blockchain Use Case (with mock-up demo)
 ## Summary
