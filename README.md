@@ -110,13 +110,13 @@ git clone https://github.com/filippos-alexandros/Encode24
 
 ```
 
-3. see [README](https://github.com/filippos-alexandros/Encode24/tree/main/contracts) in the contracts folder to build and test the contracts
+3. see [README](https://github.com/filippos-alexandros/Encode24/tree/main/contracts/README.md) in the contracts folder to build and test the contracts
 
 ```
 cd contracts
 ```
 
-4. see [README](https://github.com/filippos-alexandros/Encode24/tree/main/interface) in the interface folder to start the frontend
+4. see [README](https://github.com/filippos-alexandros/Encode24/blob/main/interface/README.md) in the interface folder to start the frontend
 
 ```
 cd interface
