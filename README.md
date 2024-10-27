@@ -153,7 +153,7 @@ The smart contracts in this project manage the inheritance of digital assets, in
 	-  `transferAssets`: Lets beneficiaries transfer part of their allocated assets to another address if restrictions are met.
 
 
-
+**Sample Code for Fund/Asset Allocation**:
 ```solidity
 
 function  addFund(
@@ -184,6 +184,7 @@ string  memory  restrictionCategory
 	-  `deployWillContract`: Creates a new instance of the Will contract and returns its address. Emits an event with the new contract's address.
 
 
+**Sample Code for Deployment**:
 
 ```solidity
 
