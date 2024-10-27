@@ -25,7 +25,7 @@ export default function TransactionWrapper({ address }: { address: Address }) {
 
   const contracts = [
     {
-      address: "0x163953ffA8A7E1f60326035bA5a4837D240150C9",
+      address: "0x0D7f4eAeb279b39D6a4bBE308855501F029B6dad",
       abi: deployABI,
       functionName: 'deployWillContract',
       args: [],
