@@ -4,6 +4,7 @@ import TransactionWrapper2 from "src/components/TransactionWrapper2";
 import { useAccount } from "wagmi";
 
 
+
 function AddContractPage() {
   const { address } = useAccount();
   const [asset, setAsset] = useState("ETH");
@@ -39,8 +40,11 @@ function AddContractPage() {
       return null; // Or an appropriate default value if no hashes are found
     }
   }
+  const getWill = () => {
+    return wills[wills.length - 1]; // Access the last element of the wills array
+  };
   const handleSubmit = async () => {
-    const newWill = {
+    let newWill = {
       asset,
       percentage,
       recipientType,
@@ -316,7 +320,7 @@ function AddContractPage() {
               
               <br></br>
               <br></br>
-              <TransactionWrapper2 address={address}/>
+              <TransactionWrapper2 address={address} will = {getWill()}/>
 
 
               <br />
