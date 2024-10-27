@@ -201,10 +201,8 @@ return  address(newContract);
 ```
 
 
-
 ## Frontend Application
-Check README inside the interface folder for more details
-(https://github.com/filippos-alexandros/Encode24/blob/main/interface/README.md)
+For more details, please check the README inside the `interface` folder: [Frontend Specification](https://github.com/filippos-alexandros/Encode24/blob/main/interface/README.md)
 
 
 ## Future Improvements
