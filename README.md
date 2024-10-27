@@ -9,22 +9,22 @@
 <details>
     <summary>Table of Contents</summary>
     <ol>
-        <li><a href="## Overview">Project Overview</a></li>
-        <li><a href="##tech-stack">Tech Stack</a></li>
-        <li><a href="##features">Features</a></li>
-        <li><a href="##demo">Demo</a></li>
-        <li><a href="##getting-started">Getting Started</a></li>
-        <li><a href="##smart-contract">Smart Contract</a></li>
-        <li><a href="##frontend-application">Frontend Application</a></li>
-        <li><a href="##future-improvements">Future Improvements</a></li>
-        <li><a href="##license">License</a></li>
+        <li><a href="## Project Overview">Project Overview</a></li>
+        <li><a href="## Tech-stack">Tech Stack</a></li>
+        <li><a href="## Features">Features</a></li>
+        <li><a href="## Demo">Demo</a></li>
+        <li><a href="## Getting-started">Getting Started</a></li>
+        <li><a href="## Smart-contract">Smart Contract</a></li>
+        <li><a href="## Frontend-application">Frontend Application</a></li>
+        <li><a href="## Future-improvements">Future Improvements</a></li>
+        <li><a href="## License">License</a></li>
     </ol>
 </details>
 
 ## Project Overview
 The Will smart contract manages the inheritance of assets, including ETH, ERC20 tokens, and NFTs. The contract allows the owner to allocate assets to beneficiaries with specific release times and restriction categories. Beneficiaries can claim their inheritance after the owner's death is confirmed. Additionally, beneficiaries can transfer part of their allocated assets to another address, subject to certain restrictions.
 
-## tech-stack
+## Tech-stack
 ### Smart Contract
 - **Solidity**: Language used to write the smart contracts.
 
@@ -44,8 +44,8 @@ The Will smart contract manages the inheritance of assets, including ETH, ERC20 
 - **Claim Inheritance**: Users can claim their allocated assets to predefined Beneficiaries after the owner's death is confirmed.
 - **Transfer Assets**: Beneficiaries can transfer part of their allocated assets to another address, subject to restriction checks.
 
-## demo
-## getting-started
+## Demo
+## Getting-started
 1. Get a free Coin Base Smart Wallet at [https://wallet.coinbase.com/](https://wallet.coinbase.com/)
 2. Clone the repo
    ```sh
@@ -108,7 +108,7 @@ The smart contracts in this project manage the inheritance of digital assets, in
       }
       ```
 
-## frontend-application
-## future-improvements
+## Frontend-application
+## Future-improvements
 ## License
 This project is licensed under the MIT License. See the LICENSE file for details.
