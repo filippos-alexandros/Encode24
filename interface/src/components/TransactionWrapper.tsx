@@ -13,17 +13,22 @@ import type {
 import type { Address, ContractFunctionParameters } from 'viem';
 import {
   BASE_SEPOLIA_CHAIN_ID,
-  mintABI,
-  mintContractAddress,
+  deployABI,
 } from '../constants';
+import { useNavigate } from 'react-router-dom';
+import { ethers } from 'ethers'
+
 
 export default function TransactionWrapper({ address }: { address: Address }) {
+  const navigate = useNavigate();
+  let eventArgs; 
+
   const contracts = [
     {
-      address: mintContractAddress,
-      abi: mintABI,
-      functionName: 'mint',
-      args: [address],
+      address: "0x163953ffA8A7E1f60326035bA5a4837D240150C9",
+      abi: deployABI,
+      functionName: 'deployWillContract',
+      args: [],
     },
   ] as unknown as ContractFunctionParameters[];
 
@@ -33,6 +38,80 @@ export default function TransactionWrapper({ address }: { address: Address }) {
 
   const handleSuccess = (response: TransactionResponse) => {
     console.log('Transaction successful', response);
+
+    // Get the existing transactionHashes array from localStorage, or initialize an empty array
+    const currentHashes = localStorage.getItem('transactionHashes');
+    let transactionHashes: string[] = currentHashes ? JSON.parse(currentHashes) : [];
+    // Type assertion to ensure response has the expected structure
+    let transactionHash = response.transactionReceipts[0]?.transactionHash as string; 
+    // Add the new transaction hash to the array
+    transactionHashes.push(transactionHash);
+    // Store the updated array back in localStorage
+    localStorage.setItem('transactionHashes', JSON.stringify(transactionHashes));
+    console.log(localStorage.getItem('transactionHashes'));
+
+    function getLatestTransactionHash() {
+      const currentHashes = localStorage.getItem('transactionHashes');
+  
+      if (currentHashes) {
+        const transactionHashes = JSON.parse(currentHashes) as string[];
+        return transactionHashes[transactionHashes.length - 1]; 
+      } else {
+        return ; ''// Or an appropriate default value if no hashes are found
+      }
+    }
+
+    function getTransactionReceipt(
+      ethersProvider: ethers.providers.Provider,
+      transactionHash: string,
+      callback: (receipt: ethers.providers.TransactionReceipt | null) => void
+    ) {
+      ethersProvider
+        .getTransactionReceipt(transactionHash)
+        .then((receipt) => {
+          console.log('-----')
+          console.log('-----')
+          console.log(receipt)
+          console.log('-----')
+          console.log('-----')
+          callback(receipt);
+        })
+        .catch((error) => {
+          console.error("Error getting transaction receipt:", error);
+          callback(null); // Or handle the error in a way that makes sense for your application
+        });
+    }
+
+    const ethersProvider = new ethers.providers.JsonRpcProvider('https://sepolia.base.org'); 
+
+    if (transactionHash) {
+      getTransactionReceipt(ethersProvider, transactionHash, (receipt) => {
+        if (receipt) {
+          // Use the transaction receipt here
+          console.log("Transaction receipt:", receipt);
+          
+          // Get the existing transactionReceipts array from localStorage, or initialize an empty array
+          let currentTransactionReceipts = localStorage.getItem('transactionReceipts');
+          let transactionReceipts: any[] = currentTransactionReceipts ? JSON.parse(currentTransactionReceipts) : [];
+          // Add the new transaction receipt to the array
+          transactionReceipts.push(receipt); 
+          // Store the updated array back in localStorage
+          localStorage.setItem('transactionReceipts', JSON.stringify(transactionReceipts));
+          
+        } else {
+          // Handle the case where the receipt was not found or there was an error
+          console.error("Transaction receipt not found.");
+        }
+      });
+    }
+
+
+
+
+
+    navigate('/add-smart-contract'); 
+
+
   };
 
   return (
@@ -53,3 +132,4 @@ export default function TransactionWrapper({ address }: { address: Address }) {
     </div>
   );
 }
+

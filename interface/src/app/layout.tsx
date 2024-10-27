@@ -33,6 +33,8 @@ export default function RootLayout({
 }: { children: React.ReactNode }) {
   return (
     <html lang="en">
+      {/*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"></link>*/}
+      {/*<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"></link>*/}
       <body className="flex items-center justify-center">
         <OnchainProviders>{children}</OnchainProviders>
       </body>
