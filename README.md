@@ -128,7 +128,7 @@ cd interface
 
 ### Contracts Overview
 
-The smart contracts in this project manage the inheritance of digital assets, including ETH, ERC20 tokens, and NFTs. The main contract, Will [dot] sol, enables the owner to allocate assets to beneficiaries with specified release times and restrictions. Beneficiaries can claim assets only after the owner's death is confirmed, either through inactivity or an external trigger.
+The smart contracts in this project manage the inheritance of digital assets, including ETH, ERC20 tokens, and NFTs. The main contract, Will.sol, enables the owner to allocate assets to beneficiaries with specified release times and restrictions. Beneficiaries can claim assets only after the owner's death is confirmed, either through inactivity or an external trigger.
 
 
 
