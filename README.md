@@ -138,23 +138,15 @@ The smart contracts in this project manage the inheritance of digital assets, in
 
 1.  **Will Contract**: Handles the allocation and distribution of assets to beneficiaries.
 
--  **Functions**:
+-  **Key Functions**:
 
 	-  `addFund`: Allows the owner to allocate assets (ETH, ERC20, and NFTs) to a beneficiary, with optional release times and restrictions.
-
-	-  `editDeathInterval`: Updates the interval after which inactivity confirms the owner's death.
 
 	-  `stillAlive`: Updates the timestamp to confirm the owner is still alive, preventing auto-confirmation of death.
 
 	-  `checkDeath`: Checks if the owner’s inactivity has surpassed the set interval to confirm death.
 
-	-  `dead`: Manually confirms the owner's death.
-
 	-  `addBeneficiary`: Adds a new beneficiary to the contract.
-
-	-  `addMore`: Adds additional assets to an existing beneficiary.
-
-	-  `updateRestrictionCategory`: Updates the restriction category for a beneficiary.
 
 	-  `claimInheritance`: Allows a beneficiary to claim allocated assets if release time conditions are met.
 
@@ -171,24 +163,13 @@ address  beneficiaryAddress,
 uint256  ethAmount,
 
 uint256  ethReleaseTime,
-
-uint256  tokenAmount,
-
-uint256  tokenReleaseTime,
-
-address  erc20TokenAddress,
-
-uint256  nftTokenId,
-
-uint256  nftReleaseTime,
-
-address  nftContractAddress,
-
+// Additional parameters...
 string  memory  restrictionCategory
 
 ) public {
 
 // Function logic to add funds
+// Either add funds to an existing beneficiary or create and allocate to a new beneficiary
 
 }
 
@@ -221,6 +202,9 @@ return  address(newContract);
 
 
 ## Frontend Application
+Check README inside the interface folder for more details
+(https://github.com/filippos-alexandros/Encode24/blob/main/interface/README.md)
+
 
 ## Future Improvements
 1. Expand to be a generic recovery mechanism
