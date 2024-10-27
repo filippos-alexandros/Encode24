@@ -26,7 +26,7 @@ contract WillTest is Test {
 
         beneficiary = address(0x2);
         vm.prank(owner);
-        will = new Will();
+        will = new Will(owner);
     }
 
     function test_checkOwner() public view {
