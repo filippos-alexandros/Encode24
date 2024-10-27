@@ -110,21 +110,13 @@ git clone https://github.com/filippos-alexandros/Encode24
 
 ```
 
-3. Install NPM packages
-
-```sh
-
-npm install
+3. see [README](https://github.com/filippos-alexandros/Encode24/contracts) in the contracts folder to build and test the contracts
 
 ```
-
-4.
-
-```js
-
-const  xxxxxxxxxxxxxxxxxx;
-
+cd contracts
 ```
+
+4. see [README](https://github.com/filippos-alexandros/Encode24/interface) in the interface folder to start the frontend
 
 
 
