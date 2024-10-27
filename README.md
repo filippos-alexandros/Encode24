@@ -1,102 +1,114 @@
+<a id="readme-top"></a>
 # Based Legacy
-# Encode 24
-# Reward: Best Real World Blockchain Use Case (with mock-up demo)
+## Encode 24
+## Best project built on Base.
+## Best real world Blockchain use case
 ## Summary
-## Overview
+<!-- TABLE OF CONTENTS -->
+<h2>Table of Contents</h2>
+<details>
+    <summary>Table of Contents</summary>
+    <ol>
+        <li><a href="## Overview">Project Overview</a></li>
+        <li><a href="##tech-stack">Tech Stack</a></li>
+        <li><a href="##features">Features</a></li>
+        <li><a href="##demo">Demo</a></li>
+        <li><a href="##getting-started">Getting Started</a></li>
+        <li><a href="##smart-contract">Smart Contract</a></li>
+        <li><a href="##frontend-application">Frontend Application</a></li>
+        <li><a href="##future-improvements">Future Improvements</a></li>
+        <li><a href="##license">License</a></li>
+    </ol>
+</details>
+
+## Project Overview
 The Will smart contract manages the inheritance of assets, including ETH, ERC20 tokens, and NFTs. The contract allows the owner to allocate assets to beneficiaries with specific release times and restriction categories. Beneficiaries can claim their inheritance after the owner's death is confirmed. Additionally, beneficiaries can transfer part of their allocated assets to another address, subject to certain restrictions.
-## Image of the demo
+
+## tech-stack
+### Smart Contract
+- **Solidity**: Language used to write the smart contracts.
+
+### Frontend
+- **React**: JavaScript library for building the user interface.
+- **Ethers.js**: To interact with the Ethereum blockchain.
+
+### Tools
+- **Hardhat / Truffle**: For smart contract development and testing.
+- **Coin Smart Wallet**: For Ethereum wallet integration.
+
+
 ## Features
+- **Coinbase Smart wallet**: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 - **Add Funds**: The owner can allocate ETH, ERC20 tokens, and NFTs to beneficiaries with specified release times and restriction categories.
-- **Confirm Death**: The owner's death can be confirmed either by inactivity or directly by an oracle.
-- **Claim Inheritance**: Beneficiaries can claim their allocated assets after the owner's death is confirmed.
+- **Confirm Death**: The owner's death can be confirmed either by inactivity or directly by an demo oracle.
+- **Claim Inheritance**: Users can claim their allocated assets to predefined Beneficiaries after the owner's death is confirmed.
 - **Transfer Assets**: Beneficiaries can transfer part of their allocated assets to another address, subject to restriction checks.
 
-## Contract Details
+## demo
+## getting-started
+1. Get a free Coin Base Smart Wallet at [https://wallet.coinbase.com/](https://wallet.coinbase.com/)
+2. Clone the repo
+   ```sh
+   git clone https://github.com/filippos-alexandros/Encode24
+   ```
+3. Install NPM packages
+   ```sh
+   npm install
+   ```
+4. 
+   ```js
+   const xxxxxxxxxxxxxxxxxx;
+   ```
 
-### State Variables
-- `owner`: The address of the contract owner.
-- `isConfirmedDead`: A boolean indicating whether the owner's death is confirmed.
-- `lastAliveTimestamp`: The timestamp of the last activity by the owner.
-- `DEATH_INTERVAL`: The interval after which the owner is considered dead if inactive.
-- `beneficiaries`: An array of Beneficiary structs storing beneficiary details.
-- `beneficiaryIndex`: A mapping from beneficiary addresses to their index in the beneficiaries array.
+## smart-contract
+### Contracts Overview
+The smart contracts in this project manage the inheritance of digital assets, including ETH, ERC20 tokens, and NFTs. The main contract, the "Will" contract, enables the owner to allocate assets to beneficiaries with specified release times and restrictions. Beneficiaries can claim assets only after the owner's death is confirmed, either through inactivity or an external trigger.
 
-### Structs
-- **Beneficiary**
-```Solidity
-struct Beneficiary {
-    address addr;
-    uint256 ethAmount;
-    uint256 ethReleaseTime;
-    uint256 tokenAmount;
-    uint256 tokenReleaseTime;
-    uint256 nftTokenId;
-    uint256 nftReleaseTime;
-    address erc20Token;
-    address nftContract;
-    string restrictionCategory;
-}
-```
-### Functions
+### Contracts
 
-#### Constructor
-Initializes the contract, setting the owner and the initial lastAliveTimestamp.
-```Solidity
-constructor() payable
-```
-#### Modifiers
-- **onlyOwner**: Ensures that only the owner can call the function.
-- **onlyBeneficiary**: Ensures that only a beneficiary can call the function.
-- **onlyIfConfirmedDead**: Ensures that the owner's death is confirmed before calling the function.
+1. **Will Contract**: Handles the allocation and distribution of assets to beneficiaries.
+    - **Functions**:
+      - `addFund`: Allows the owner to allocate assets (ETH, ERC20, and NFTs) to a beneficiary, with optional release times and restrictions.
+      - `editDeathInterval`: Updates the interval after which inactivity confirms the owner's death.
+      - `stillAlive`: Updates the timestamp to confirm the owner is still alive, preventing auto-confirmation of death.
+      - `checkDeath`: Checks if the owner’s inactivity has surpassed the set interval to confirm death.
+      - `dead`: Manually confirms the owner's death.
+      - `addBeneficiary`: Adds a new beneficiary to the contract.
+      - `addMore`: Adds additional assets to an existing beneficiary.
+      - `updateRestrictionCategory`: Updates the restriction category for a beneficiary.
+      - `claimInheritance`: Allows a beneficiary to claim allocated assets if release time conditions are met.
+      - `transferAssets`: Lets beneficiaries transfer part of their allocated assets to another address if restrictions are met.
+      
+      ```solidity
+      function addFund(
+            address beneficiaryAddress,
+            uint256 ethAmount,
+            uint256 ethReleaseTime,
+            uint256 tokenAmount,
+            uint256 tokenReleaseTime,
+            address erc20TokenAddress,
+            uint256 nftTokenId,
+            uint256 nftReleaseTime,
+            address nftContractAddress,
+            string memory restrictionCategory
+      ) public {
+            // Function logic to add funds
+      }
+      ```
 
-#### Public Functions
+2. **Deployer Contract**: Deploys new instances of the Will contract.
+    - **Functions**:
+      - `deployWillContract`: Creates a new instance of the Will contract and returns its address. Emits an event with the new contract's address.
 
-- `editDeathInterval(uint256 _deathInterval)`: Allows the owner to edit the death interval.
-- `stillAlive()`: Updates the lastAliveTimestamp to reset the death interval countdown.
-- `checkDeath()`: Checks the death status based on inactivity.
-- `dead()`: Confirms the owner's death directly by an oracle.
-- `addFund(...)`: Adds assets to a beneficiary.
-- `updateRestrictionCategory(address _beneficiary, string memory _restrictionCategory)`: Updates the restriction category for a beneficiary.
-- `claimInheritance(address _beneficiaryAddress)`: Allows beneficiaries to claim their inheritance after the owner's death is confirmed.
-- `transferAssets(address to, uint256 ethAmount, uint256 tokenAmount)`: Allows beneficiaries to transfer part of their allocated assets to another address.
+      ```solidity
+      function deployWillContract() external returns (address) {
+            Will newContract = new Will();
+            emit ContractDeployed(address(newContract));
+            return address(newContract);
+      }
+      ```
 
-#### Internal Functions
-- `addBeneficiary(...)`: Adds a new beneficiary.
-- `addMore(...)`: Adds more assets to an existing beneficiary.
-- `catCheckPass(string memory restrictionCategory)`: Checks if the restriction category is "none".
-
-## Example Usage
-- **Adding Funds**
-```Solidity
-will.addFund(
-    beneficiaryAddress,
-    ethAmount,
-    ethReleaseTime,
-    tokenAmount,
-    tokenReleaseTime,
-    erc20TokenAddress,
-    nftTokenId,
-    nftReleaseTime,
-    nftContractAddress,
-    restrictionCategory
-
-);
-```
-- **Claiming Inheritance**
-```Solidity
-will.claimInheritance(beneficiaryAddress);
-```
-- **Transferring Assets**
-```Solidity
-will.transferAssets(recipientAddress, ethAmount, tokenAmount);
-```
-
-## Deployment
-To deploy the contract, use the following steps:
-1. Compile the contract using a Solidity compiler.
-2. Deploy the contract to the desired Ethereum network.
-3. Interact with the contract using a web3 provider or a frontend interface.
-
+## frontend-application
+## future-improvements
 ## License
 This project is licensed under the MIT License. See the LICENSE file for details.
-

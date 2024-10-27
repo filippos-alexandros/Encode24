@@ -292,12 +292,13 @@ contract Will {
         }
     }
 
-    /*
+/*
     @dev Check if the restriction category is valid
     @param _restrictionCategory: Category of restriction for the beneficiary
     */
     function catCheckPass(string memory /*_restrictionCategory*/) internal pure returns (bool) {
-        // Base verifiction
+        // Base verification
+        
         return true;
     }
 
