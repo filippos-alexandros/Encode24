@@ -35,8 +35,8 @@ contract Will {
     /*
     @dev Constructor function to set the owner of the will contract
     */
-    constructor() payable {
-        owner = msg.sender;
+    constructor(address _owner) payable {
+        owner = _owner;
         isConfirmedDead = false;
         lastAliveTimestamp = block.timestamp;
     }
