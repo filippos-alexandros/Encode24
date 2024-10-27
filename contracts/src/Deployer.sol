@@ -7,7 +7,7 @@ contract Deployer {
     event ContractDeployed(address indexed contractAddress);
 
     function deployWillContract() external returns (address) {
-        Will newContract = new Will();
+        Will newContract = new Will(msg.sender);
         emit ContractDeployed(address(newContract));
         return address(newContract);
     }
