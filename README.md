@@ -9,15 +9,15 @@
 <details>
     <summary>Table of Contents</summary>
     <ol>
-        <li><a href="## Project Overview">Project Overview</a></li>
-        <li><a href="## Tech-stack">Tech Stack</a></li>
-        <li><a href="## Features">Features</a></li>
-        <li><a href="## Demo">Demo</a></li>
-        <li><a href="## Getting-started">Getting Started</a></li>
-        <li><a href="## Smart-contract">Smart Contract</a></li>
-        <li><a href="## Frontend-application">Frontend Application</a></li>
-        <li><a href="## Future-improvements">Future Improvements</a></li>
-        <li><a href="## License">License</a></li>
+        <li>Project Overview</a></li>
+        <li>Tech Stack</a></li>
+        <li>Features</a></li>
+        <li>Demo</a></li>
+        <li>Getting Started</a></li>
+        <li>Smart Contract</a></li>
+        <li>Frontend Application</a></li>
+        <li>Future Improvements</a></li>
+        <li>>License</a></li>
     </ol>
 </details>
 
