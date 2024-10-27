@@ -34,9 +34,14 @@ contract Will {
 
     /*
     @dev Constructor function to set the owner of the will contract
+    the owner is the person who deploys the contract or specified by deployer.sol
     */
     constructor(address _owner) payable {
-        owner = _owner;
+        if (_owner == address(0)) {
+            owner = msg.sender;
+        } else {
+            owner = _owner;
+        }
         isConfirmedDead = false;
         lastAliveTimestamp = block.timestamp;
     }
